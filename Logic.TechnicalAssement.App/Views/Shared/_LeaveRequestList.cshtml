@@ -1,0 +1,46 @@
+﻿@model Logic.TechnicalAssement.App.ViewModels.LeaveDetailViewModel;
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>FirstName</td>
+            <td>LastName</td>
+            <td>LeaveType</td>
+            <td>Email</td>
+            <td>StartDate</td>
+            <td>EndDate</td>
+            <td>IsHalfDay</td>
+            <td>Actions</td>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.LeaveType</td>
+                <td>@item.Email</td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>@item.IsHalfDay</td>
+                <td>
+                    <a class="btn btn-primary" href="@Url.Action("Index", "Leave", new {id = @item.Id })">Edit</a>
+                    <a class="btn btn-primary" href="@Url.Action("Remove", "Leave", new {id = @item.Id })">Delete</a>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+@section Scripts {
+<script>
+    function redirectOnClick(id) {
+        alert(id);
+        document.location = 'ControllerName/ActionName/'+id;
+    }
+</script>
+}

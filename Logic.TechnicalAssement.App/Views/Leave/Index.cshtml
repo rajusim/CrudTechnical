@@ -1,0 +1,98 @@
+﻿@model Logic.TechnicalAssement.App.ViewModels.LeaveDetailViewModel;
+
+
+<div class="text-leave">
+    <h2 class="mb-3">@Model.PageTitle</h2>
+    <div>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Leave", new {id = 0 })">Create Leave</a>
+    </div>
+    <div>
+        <form>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.Id"> Id</label>
+                <input asp-for="LeaveViewModel.Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.FirstName"> First Name </label>
+                <input asp-for="LeaveViewModel.FirstName" class="form-control" />
+                <span asp-validation-for="LeaveViewModel.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.LastName"> Last Name </label>
+                <input asp-for="LeaveViewModel.LastName" class="form-control" />
+                <span asp-validation-for="LeaveViewModel.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.LeaveType"> Leave Type </label>
+                <select class="btn btn-secondary btn-sm  " asp-for="LeaveViewModel.LeaveType" asp-items="Html.GetEnumSelectList<LeaveTypeEnum>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="LeaveViewModel.LeaveType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.Email"> Email </label>
+                <input asp-for="LeaveViewModel.Email" class="form-control" />
+                <span asp-validation-for="LeaveViewModel.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.StartDate"> Start Date </label>
+                <input asp-for="LeaveViewModel.StartDate" class="form-control" />
+                <span asp-validation-for="LeaveViewModel.StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LeaveViewModel.EndDate"> End Date </label>
+                <input asp-for="LeaveViewModel.EndDate" class="form-control" />
+                <span asp-validation-for="LeaveViewModel.EndDate" class="text-danger"></span>
+            </div>
+             <div class="checkbox-inline">
+                <label>
+                    @Html.CheckBox("LeaveViewModel.IsHalfDay") Half Day
+                </label>
+                <span asp-validation-for="LeaveViewModel.IsHalfDay" class="text-danger"></span>
+            </div>
+          <div class="col-12">
+            <input class="btn btn-primary" type="button" id="post" value="Save" />
+          </div>
+        </form>
+    </div>
+    <div id="gg"></div>
+    <partial name="_LeaveRequestList" model="Model"/>
+</div>
+<div id="resuests">
+    
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $("#post").click(function () {
+            var flag = $("form").valid();
+            var data = $("form").serialize();
+            console.log(data);
+            if (flag) {
+                $.ajax({
+                    url: "/leave/RegisterLeave",
+                    type: "Post",
+                    data: data,
+                    dataType: "json",
+                    success: function (res) {
+                        debugger;
+                        if (res.result == 'Redirect')
+                            window.location.href = '/Leave/Index/' + res.id;
+                        else
+                            alert(res.result);
+                    },
+                    error: function (data) {
+                        alert('error' + data.LeaveRequests);
+                    }
+                })
+            }
+
+        })
+    </script>
+
+
+
+}
